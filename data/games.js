@@ -1,5 +1,3 @@
---- START OF FILE games.js ---
-
 // Video Games Database
 const GAMES = [
   // === ACTION / OPEN WORLD / ADVENTURE (1-30) ===
@@ -188,4 +186,3 @@ const GAMES = [
   { "id": 199, "title": "Stray", "year": 2022, "genres": ["приключения", "киберпанк"], "price": 30, "description": "Игра про рыжего котика в городе роботов.", "coverUrl": "covers/199.jpg" },
   { "id": 200, "title": "Baldur's Gate II", "year": 2000, "genres": ["RPG", "D&D"], "price": 20, "description": "Классика RPG. Минск и хомяк Бу.", "coverUrl": "covers/200.jpg" }
 ];
---- END OF FILE games.js ---

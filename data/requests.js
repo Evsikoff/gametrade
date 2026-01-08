@@ -1,5 +1,3 @@
---- START OF FILE requests.js ---
-
 // Customer Requests Database
 const REQUESTS = [
     // === OPEN WORLD & ACTION ===
@@ -235,4 +233,3 @@ const REQUESTS = [
 
 // Customer avatars for variety
 const CUSTOMER_AVATARS = ["🎮", "🕹️", "👾", "🧙‍♂️", "🧝‍♀️", "🧟", "🏎️", "⚽", "🤓", "😎", "🤠", "🤖"];
---- END OF FILE requests.js ---
