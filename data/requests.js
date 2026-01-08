@@ -232,4 +232,4 @@ const REQUESTS = [
 ];
 
 // Customer avatars for variety
-const CUSTOMER_AVATARS = ["🎮", "🕹️", "👾", "🧙‍♂️", "🧝‍♀️", "🧟", "🏎️", "⚽", "🤓", "😎", "🤠", "🤖"];
+const CUSTOMER_AVATARS = ["👨", "👩", "🧑", "👴", "👵", "👦", "👧", "🧔", "👨‍🦰", "👩‍🦱", "👨‍🦳", "👩‍🦰"];
