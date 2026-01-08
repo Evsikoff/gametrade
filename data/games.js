@@ -159,7 +159,7 @@ const GAMES = [
   { "id": 172, "title": "Корсары: Город потерянных кораблей", "year": 2009, "genres": ["RPG", "пираты"], "price": 15, "description": "Лучшая игра про пиратов и морские бои.", "coverUrl": "covers/172.jpg" },
   { "id": 173, "title": "Ил-2 Штурмовик", "year": 2001, "genres": ["симулятор", "самолеты"], "price": 15, "description": "Хардкорный авиасимулятор Второй мировой.", "coverUrl": "covers/173.jpg" },
   { "id": 174, "title": "Аллоды Онлайн", "year": 2010, "genres": ["MMORPG", "фэнтези"], "price": 0, "description": "Русский ответ Варкрафту. Корабли в астрале.", "coverUrl": "covers/174.jpg" },
-  { "id": 175, "title": "Atomic Heart", "year": 2023, "genres": ["шутер", "ссср"], "price": 50, "description": "Альтернативный СССР, роботы и ремиксы Пугачевой.", "coverUrl": "covers/175.jpg" },
+  { "id": 175, "title": "Atomic Heart", "year": 2023, "genres": ["шутер", "СССР"], "price": 50, "description": "Альтернативный СССР, роботы и ремиксы Пугачевой.", "coverUrl": "covers/175.jpg" },
   { "id": 176, "title": "Мор (Pathologic 2)", "year": 2019, "genres": ["выживание", "арт-хаус"], "price": 30, "description": "Город в степи, чума и сложный моральный выбор.", "coverUrl": "covers/176.jpg" },
   { "id": 177, "title": "Beholder", "year": 2016, "genres": ["стратегия", "антиутопия"], "price": 10, "description": "Управдом следит за жильцами в тоталитарном государстве.", "coverUrl": "covers/177.jpg" },
   { "id": 178, "title": "World of Tanks", "year": 2010, "genres": ["MMO", "танки"], "price": 0, "description": "Танки, рандом и «не пробил».", "coverUrl": "covers/178.jpg" },
