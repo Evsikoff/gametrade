@@ -246,7 +246,7 @@ body {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 12px;
-    padding: 15px 20px 8px 20px;
+    padding: 10px 20px 6px 20px;
     position: relative;
 }
 
@@ -270,13 +270,13 @@ body {
 
 /* Первый ряд - отступ сверху */
 .shelf-row:first-child {
-    padding-top: 20px;
+    padding-top: 14px;
 }
 
 /* Последний ряд - дополнительный отступ для скролла */
 .shelf-row:last-child {
-    padding-bottom: 25px;
-    margin-bottom: 5px;
+    padding-bottom: 14px;
+    margin-bottom: 0;
 }
 
 /* === SHELF SLOT (GAME) === */
