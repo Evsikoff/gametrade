@@ -1,21 +1,28 @@
 /* === DESIGN TOKENS === */
 :root {
-    --bg-dark: #2c241b;
-    /* Dark Wood */
-    --bg-card: #f9f5eb;
-    /* Parchment/Paper */
-    --bg-shelf: #4a3728;
-    /* Shelf Wood */
-    --accent-red: #8b0000;
-    --accent-blue: #000080;
-    --accent-gold: #b8860b;
-    --accent-green: #006400;
-    --text-primary: #2c1e12;
-    --text-secondary: #5c4033;
-    --text-light: #f9f5eb;
-    --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.2);
-    --font-heading: 'Playfair Display', serif;
-    --font-body: 'Merriweather', serif;
+    --bg-dark: #0a0a0f;
+    /* Dark Gaming Background */
+    --bg-card: #1a1a2e;
+    /* Dark Card */
+    --bg-shelf: #16213e;
+    /* Shelf Dark Blue */
+    --accent-red: #ff2e63;
+    /* Neon Pink/Red */
+    --accent-blue: #00d9ff;
+    /* Neon Cyan */
+    --accent-gold: #ffd700;
+    /* Bright Gold */
+    --accent-green: #00ff88;
+    /* Neon Green */
+    --accent-purple: #a855f7;
+    /* Neon Purple */
+    --text-primary: #ffffff;
+    --text-secondary: #94a3b8;
+    --text-light: #e2e8f0;
+    --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-neon: 0 0 20px rgba(0, 217, 255, 0.3);
+    --font-heading: 'Orbitron', sans-serif;
+    --font-body: 'Rajdhani', sans-serif;
 }
 
 /* === RESET & BASE === */
@@ -45,8 +52,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
-    /* Subtle wood texture if available, or just color */
+    background-image:
+        radial-gradient(ellipse at 20% 80%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(0, 217, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(0, 255, 136, 0.05) 0%, transparent 70%);
 }
 
 /* === GAME CONTAINER === */
@@ -55,15 +64,15 @@ body {
     max-width: 1600px;
     aspect-ratio: 16 / 9;
     max-height: 100vh;
-    background: #3e3226;
+    background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #0f0f1a 100%);
     display: grid;
     grid-template-rows: auto auto 1fr auto;
     padding: 20px;
     gap: 20px;
     overflow: hidden;
-    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
-    border: 10px solid #261a12;
-    border-radius: 4px;
+    box-shadow: 0 0 50px rgba(0, 217, 255, 0.2), inset 0 0 100px rgba(0, 0, 0, 0.5);
+    border: 2px solid rgba(0, 217, 255, 0.3);
+    border-radius: 12px;
 }
 
 /* === HEADER === */
@@ -73,24 +82,26 @@ body {
     flex-wrap: wrap;
     gap: 15px;
     padding: 15px 25px;
-    background: var(--bg-card);
-    border-radius: 4px;
-    border: 1px solid #dcdcdc;
-    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
+    background: linear-gradient(90deg, rgba(22, 33, 62, 0.9) 0%, rgba(26, 26, 46, 0.95) 50%, rgba(22, 33, 62, 0.9) 100%);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 217, 255, 0.2);
+    box-shadow: 0 0 15px rgba(0, 217, 255, 0.1), inset 0 0 20px rgba(0, 0, 0, 0.3);
 }
 
 .stat {
     font-family: var(--font-heading);
     font-size: 16px;
-    color: var(--text-primary);
+    color: var(--text-light);
     font-weight: bold;
     display: flex;
     align-items: center;
+    text-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
 }
 
 .stat-icon {
     margin-right: 8px;
     font-size: 18px;
+    filter: drop-shadow(0 0 5px rgba(0, 255, 136, 0.5));
 }
 
 /* === CUSTOMER PANEL === */
@@ -99,26 +110,32 @@ body {
     align-items: center;
     gap: 25px;
     padding: 20px 30px;
-    background: #fffbf0;
-    border-radius: 4px;
-    border: 1px solid #e0d0b0;
-    box-shadow: var(--shadow-soft);
+    background: linear-gradient(135deg, rgba(22, 33, 62, 0.95) 0%, rgba(26, 26, 46, 0.9) 100%);
+    border-radius: 8px;
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.1), var(--shadow-soft);
     min-height: 100px;
 }
 
 #customer-avatar {
     font-size: 56px;
-    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
+    filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.5));
+    animation: float 2s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
 }
 
 #customer-speech {
     flex: 1;
-    background: #fff;
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.95) 0%, rgba(15, 15, 26, 0.9) 100%);
     padding: 20px;
     border-radius: 12px 12px 12px 0;
     position: relative;
-    border: 1px solid #e0e0e0;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 217, 255, 0.2);
+    box-shadow: 0 0 15px rgba(0, 217, 255, 0.1);
 }
 
 #customer-speech::before {
@@ -157,13 +174,14 @@ body {
     font-size: 18px;
     font-style: italic;
     line-height: 1.5;
-    color: var(--text-primary);
+    color: var(--text-light);
 }
 
 #customer-counter {
     font-family: var(--font-heading);
     font-size: 14px;
-    color: var(--text-secondary);
+    color: var(--accent-blue);
+    text-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
 }
 
 /* === SHELF === */
@@ -182,12 +200,12 @@ body {
     flex-direction: column;
     gap: 0;
     padding: 0;
-    background: linear-gradient(180deg, #5a4535 0%, #4a3728 50%, #3e2b1e 100%);
-    border-radius: 8px;
-    border: 8px solid #3e2b1e;
+    background: linear-gradient(180deg, rgba(22, 33, 62, 0.9) 0%, rgba(15, 15, 26, 0.95) 50%, rgba(10, 10, 15, 1) 100%);
+    border-radius: 12px;
+    border: 2px solid rgba(0, 217, 255, 0.2);
     box-shadow:
         inset 0 0 30px rgba(0, 0, 0, 0.5),
-        0 10px 30px rgba(0, 0, 0, 0.4);
+        0 0 30px rgba(0, 217, 255, 0.1);
     width: 100%;
     height: 100%;
     max-width: 1400px;
@@ -201,27 +219,27 @@ body {
 }
 
 #shelf::-webkit-scrollbar-track {
-    background: #2c1e12;
-    border-radius: 0 8px 8px 0;
+    background: rgba(10, 10, 15, 0.8);
+    border-radius: 0 12px 12px 0;
 }
 
 #shelf::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #8b6914, #b8860b, #8b6914);
+    background: linear-gradient(180deg, var(--accent-blue), var(--accent-purple));
     border-radius: 6px;
-    border: 2px solid #2c1e12;
+    border: 2px solid rgba(10, 10, 15, 0.8);
 }
 
 #shelf::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #a07816, #d4a017, #a07816);
+    background: linear-gradient(180deg, var(--accent-green), var(--accent-blue));
 }
 
 /* Firefox scrollbar */
 #shelf {
     scrollbar-width: thin;
-    scrollbar-color: #b8860b #2c1e12;
+    scrollbar-color: var(--accent-blue) rgba(10, 10, 15, 0.8);
 }
 
-/* Ряд книг (полка) */
+/* Ряд игр (полка) */
 .shelf-row {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -230,23 +248,22 @@ body {
     position: relative;
 }
 
-/* Деревянная полка под книгами */
+/* Неоновая полка под играми */
 .shelf-row::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 12px;
-    background: linear-gradient(180deg,
-        #6b4423 0%,
-        #8b5a2b 30%,
-        #5c3d1e 70%,
-        #4a3018 100%);
-    box-shadow:
-        0 4px 8px rgba(0, 0, 0, 0.4),
-        inset 0 2px 4px rgba(255, 255, 255, 0.1);
-    border-radius: 0 0 2px 2px;
+    height: 4px;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        var(--accent-blue) 20%,
+        var(--accent-purple) 50%,
+        var(--accent-blue) 80%,
+        transparent 100%);
+    box-shadow: 0 0 15px rgba(0, 217, 255, 0.5);
+    border-radius: 2px;
 }
 
 /* Первый ряд - отступ сверху */
@@ -260,18 +277,19 @@ body {
     margin-bottom: 5px;
 }
 
-/* === SHELF SLOT (BOOK) === */
+/* === SHELF SLOT (GAME) === */
 .shelf-slot {
     display: flex;
     flex-direction: row;
-    background: linear-gradient(135deg, #f9f5eb 0%, #e8e0d0 100%);
-    border-radius: 6px;
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.95) 0%, rgba(22, 33, 62, 0.9) 100%);
+    border-radius: 8px;
     overflow: hidden;
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow:
-        0 4px 8px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        0 4px 8px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 217, 255, 0.15);
     min-height: 120px;
     position: relative;
 }
@@ -280,13 +298,14 @@ body {
     transform: translateY(-8px) scale(1.02);
     z-index: 10;
     box-shadow:
-        0 12px 24px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        0 12px 30px rgba(0, 217, 255, 0.3),
+        0 0 20px rgba(168, 85, 247, 0.2);
+    border-color: var(--accent-blue);
 }
 
 .shelf-slot.empty {
-    background: rgba(0, 0, 0, 0.2);
-    border: 2px dashed rgba(255, 255, 255, 0.15);
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px dashed rgba(0, 217, 255, 0.2);
     box-shadow: none;
     min-height: 120px;
 }
@@ -294,6 +313,7 @@ body {
 .shelf-slot.empty:hover {
     transform: none;
     box-shadow: none;
+    border-color: rgba(0, 217, 255, 0.3);
 }
 
 .shelf-slot.sold {
@@ -302,8 +322,8 @@ body {
     transition: all 0.4s ease;
 }
 
-/* Book visual - обложка книги */
-.book-cover {
+/* Game visual - обложка игры */
+.game-cover {
     width: 85px;
     min-width: 85px;
     height: 100%;
@@ -313,44 +333,45 @@ body {
     flex-shrink: 0;
 }
 
-.book-cover img {
+.game-cover img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
 }
 
-/* Эффект переплета книги */
-.book-spine {
+/* Эффект коробки игры */
+.game-spine {
     position: absolute;
     left: 0;
     top: 0;
     bottom: 0;
-    width: 6px;
-    background: linear-gradient(90deg,
-        rgba(0, 0, 0, 0.3) 0%,
-        rgba(255, 255, 255, 0.2) 50%,
-        rgba(0, 0, 0, 0.1) 100%);
+    width: 4px;
+    background: linear-gradient(180deg,
+        var(--accent-blue) 0%,
+        var(--accent-purple) 50%,
+        var(--accent-blue) 100%);
     z-index: 2;
+    box-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
 }
 
-/* Блок с информацией о книге */
-.book-info {
+/* Блок с информацией об игре */
+.game-info {
     flex: 1;
     padding: 10px 12px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background: linear-gradient(180deg, #fffef8 0%, #f5f0e0 100%);
-    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    background: transparent;
+    border-left: 1px solid rgba(0, 217, 255, 0.1);
     min-width: 0;
 }
 
-.book-title {
+.game-title {
     font-size: 14px;
     font-weight: bold;
     font-family: var(--font-heading);
-    color: var(--text-primary);
+    color: var(--text-light);
     line-height: 1.3;
     margin-bottom: 4px;
     display: -webkit-box;
@@ -358,12 +379,13 @@ body {
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-shadow: 0 0 10px rgba(0, 217, 255, 0.3);
 }
 
-.book-author {
+.game-year {
     font-size: 12px;
-    font-style: italic;
-    color: var(--text-secondary);
+    font-weight: 500;
+    color: var(--accent-purple);
     line-height: 1.2;
     margin-bottom: auto;
     display: -webkit-box;
@@ -373,16 +395,16 @@ body {
     text-overflow: ellipsis;
 }
 
-.book-price {
+.game-price {
     font-size: 14px;
     font-weight: bold;
-    color: #fff;
-    background: linear-gradient(135deg, #2d8f2d 0%, #1a6b1a 100%);
+    color: #000;
+    background: linear-gradient(135deg, var(--accent-green) 0%, #00cc6a 100%);
     padding: 4px 10px;
     border-radius: 4px;
     align-self: flex-start;
     margin-top: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
 }
 
 /* Пустой слот */
@@ -392,7 +414,7 @@ body {
     justify-content: center;
     width: 100%;
     height: 100%;
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(0, 217, 255, 0.3);
     font-size: 32px;
 }
 
@@ -492,69 +514,69 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* Vertical alignment */
     gap: 20px;
     padding: 10px;
     min-height: 70px;
-    /* Reserve space */
 }
 
 .btn {
     font-family: var(--font-heading);
     font-size: 16px;
-    /* Unified font size */
     height: 50px;
-    /* Fixed height */
     min-width: 180px;
-    /* Fixed min-width */
     padding: 0 20px;
-    /* Horizontal padding only */
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
     font-weight: bold;
-    letter-spacing: 0.5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     display: inline-flex;
-    /* For centering */
     align-items: center;
     justify-content: center;
     text-align: center;
     line-height: 1;
-    /* Reset line-height */
 }
 
 .btn-primary {
-    background: var(--accent-green);
-    /* Green baize */
-    color: #fff;
-    border: 1px solid #004d00;
+    background: linear-gradient(135deg, var(--accent-green) 0%, #00cc6a 100%);
+    color: #000;
+    border: 1px solid rgba(0, 255, 136, 0.5);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
 }
 
 .btn-primary:hover {
-    background: #008000;
-    transform: translateY(-2px);
+    background: linear-gradient(135deg, #00ff99 0%, var(--accent-green) 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
 }
 
 .btn-secondary {
-    background: #f9f5eb;
-    color: var(--text-primary);
-    border: 1px solid #d0c0a0;
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.9) 0%, rgba(22, 33, 62, 0.8) 100%);
+    color: var(--text-light);
+    border: 1px solid rgba(0, 217, 255, 0.3);
 }
 
 .btn-secondary:hover {
-    background: #fff;
-    transform: translateY(-2px);
+    background: linear-gradient(135deg, rgba(22, 33, 62, 1) 0%, rgba(26, 26, 46, 1) 100%);
+    transform: translateY(-3px);
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 15px rgba(0, 217, 255, 0.3);
 }
 
 .btn-danger {
-    background: var(--accent-red);
+    background: linear-gradient(135deg, var(--accent-red) 0%, #cc0044 100%);
     color: #fff;
+    border: 1px solid rgba(255, 46, 99, 0.5);
+    box-shadow: 0 0 15px rgba(255, 46, 99, 0.3);
 }
 
 .btn-danger:hover {
-    background: #a00000;
+    background: linear-gradient(135deg, #ff4477 0%, var(--accent-red) 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 0 25px rgba(255, 46, 99, 0.5);
 }
 
 /* === MODALS === */
@@ -564,8 +586,8 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(2px);
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(5px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -577,49 +599,51 @@ body {
 }
 
 .modal-content {
-    background: var(--bg-card);
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.98) 0%, rgba(15, 15, 26, 0.98) 100%);
     padding: 40px;
-    border-radius: 2px;
+    border-radius: 12px;
     max-width: 600px;
     width: 100%;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 50px rgba(0, 217, 255, 0.2), 0 20px 50px rgba(0, 0, 0, 0.5);
     text-align: center;
-    border: 1px solid #d0c0a0;
-    background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');
+    border: 1px solid rgba(0, 217, 255, 0.3);
 }
 
 .victory-content {
-    border: 4px double var(--accent-gold);
+    border: 2px solid var(--accent-gold);
+    box-shadow: 0 0 50px rgba(255, 215, 0, 0.3), 0 20px 50px rgba(0, 0, 0, 0.5);
 }
 
 .victory-content h1 {
     color: var(--accent-gold);
     font-family: var(--font-heading);
     margin-bottom: 20px;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
 }
 
 #modal-cover {
     width: 180px;
     height: 270px;
     object-fit: cover;
-    border-radius: 4px;
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    box-shadow: 0 0 30px rgba(0, 217, 255, 0.3);
     margin-bottom: 20px;
+    border: 2px solid rgba(0, 217, 255, 0.3);
 }
 
 .modal-info h2 {
     font-family: var(--font-heading);
-    color: var(--text-primary);
+    color: var(--text-light);
     font-size: 24px;
     margin-bottom: 5px;
+    text-shadow: 0 0 10px rgba(0, 217, 255, 0.3);
 }
 
 .modal-info h3 {
     font-family: var(--font-heading);
-    color: var(--text-secondary);
+    color: var(--accent-purple);
     font-size: 18px;
     margin-bottom: 20px;
-    font-style: italic;
 }
 
 .modal-description {
@@ -627,8 +651,10 @@ body {
     line-height: 1.6;
     margin-bottom: 20px;
     padding: 15px;
-    background: rgba(0, 0, 0, 0.03);
-    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    color: var(--text-secondary);
+    border: 1px solid rgba(0, 217, 255, 0.1);
 }
 
 #modal-genres {
@@ -637,6 +663,7 @@ body {
     text-transform: uppercase;
     font-size: 12px;
     letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
 }
 
 #modal-price {
@@ -644,6 +671,7 @@ body {
     font-size: 24px;
     color: var(--accent-green);
     margin: 20px 0;
+    text-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
 }
 
 .modal-actions {
@@ -661,6 +689,15 @@ body {
     flex-direction: column;
 }
 
+.shop-content h2 {
+    color: var(--text-light);
+    text-shadow: 0 0 10px rgba(0, 217, 255, 0.3);
+}
+
+.shop-content p {
+    color: var(--text-secondary);
+}
+
 #shop-filters {
     margin: 15px 0;
     display: flex;
@@ -672,10 +709,17 @@ select {
     padding: 8px 15px;
     font-family: var(--font-body);
     font-size: 14px;
-    border: 1px solid #d0c0a0;
-    border-radius: 4px;
-    background: #fff;
+    border: 1px solid rgba(0, 217, 255, 0.3);
+    border-radius: 6px;
+    background: rgba(15, 15, 26, 0.9);
+    color: var(--text-light);
     cursor: pointer;
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 10px rgba(0, 217, 255, 0.3);
 }
 
 #shop-catalog {
@@ -685,33 +729,35 @@ select {
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 20px;
     padding: 20px;
-    background: rgba(0, 0, 0, 0.03);
-    border-radius: 4px;
-    border: 1px solid #e0d0b0;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 217, 255, 0.1);
 }
 
 .shop-item {
-    background: #fff;
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.9) 0%, rgba(22, 33, 62, 0.8) 100%);
     padding: 10px;
-    border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
     gap: 10px;
-    transition: transform 0.2s;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 217, 255, 0.1);
 }
 
 .shop-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 217, 255, 0.2);
+    border-color: var(--accent-blue);
 }
 
 .shop-item.owned {
-    opacity: 0.5;
-    filter: grayscale(1);
+    opacity: 0.4;
+    filter: grayscale(0.8);
 }
 
-.shop-vhs-case {
+.shop-game-case {
     position: relative;
     aspect-ratio: 2/3;
 }
@@ -720,7 +766,8 @@ select {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 2px;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 217, 255, 0.2);
 }
 
 .shop-item-title {
@@ -728,6 +775,7 @@ select {
     font-size: 14px;
     font-weight: bold;
     text-align: center;
+    color: var(--text-light);
     display: -webkit-box;
     -webkit-line-clamp: 2;
     line-clamp: 2;
@@ -735,10 +783,10 @@ select {
     overflow: hidden;
 }
 
-.shop-item-author {
+.shop-item-year {
     font-size: 11px;
-    font-style: italic;
-    color: var(--text-secondary);
+    font-weight: 500;
+    color: var(--accent-purple);
     text-align: center;
     display: -webkit-box;
     -webkit-line-clamp: 1;
@@ -751,28 +799,35 @@ select {
     text-align: center;
     font-weight: bold;
     color: var(--accent-green);
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
 }
 
 .btn-buy {
     width: 100%;
     padding: 8px;
-    background: var(--text-primary);
+    background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
     color: #fff;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
+    font-family: var(--font-heading);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
 }
 
 .btn-buy:hover {
-    background: var(--accent-blue);
+    background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-blue) 100%);
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
 }
 
 /* === LOADING === */
 .loading-overlay {
     position: fixed;
     inset: 0;
-    background: #2c241b;
-    color: #f9f5eb;
+    background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%);
+    color: var(--text-light);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -792,13 +847,15 @@ select {
 }
 
 .loading-spinner {
-    width: 50px;
-    height: 50px;
-    border: 5px solid rgba(255, 255, 255, 0.1);
-    border-top-color: var(--accent-gold);
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(0, 217, 255, 0.1);
+    border-top-color: var(--accent-blue);
+    border-right-color: var(--accent-purple);
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin: 0 auto 20px;
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
 }
 
 @keyframes spin {
@@ -811,11 +868,14 @@ select {
     font-family: var(--font-heading);
     font-size: 24px;
     margin-bottom: 10px;
+    color: var(--accent-blue);
+    text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
 }
 
 .loading-subtitle {
     font-size: 14px;
     opacity: 0.7;
+    color: var(--text-secondary);
 }
 
 /* === CONFIRMATION MODAL === */
@@ -829,6 +889,7 @@ select {
     color: var(--accent-red);
     margin-bottom: 15px;
     font-size: 22px;
+    text-shadow: 0 0 15px rgba(255, 46, 99, 0.5);
 }
 
 .confirm-content p {
@@ -840,4 +901,42 @@ select {
 
 .confirm-content .modal-actions {
     gap: 15px;
+}
+
+/* Legacy support - keep book classes working but with game styles */
+.book-cover {
+    width: 85px; min-width: 85px; height: 100%; min-height: 120px;
+    position: relative; overflow: hidden; flex-shrink: 0;
+}
+.book-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.book-spine {
+    position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+    background: linear-gradient(180deg, var(--accent-blue) 0%, var(--accent-purple) 50%, var(--accent-blue) 100%);
+    z-index: 2; box-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+}
+.book-info {
+    flex: 1; padding: 10px 12px; display: flex; flex-direction: column;
+    justify-content: space-between; background: transparent;
+    border-left: 1px solid rgba(0, 217, 255, 0.1); min-width: 0;
+}
+.book-title {
+    font-size: 14px; font-weight: bold; font-family: var(--font-heading);
+    color: var(--text-light); line-height: 1.3; margin-bottom: 4px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden; text-overflow: ellipsis; text-shadow: 0 0 10px rgba(0, 217, 255, 0.3);
+}
+.book-author {
+    font-size: 12px; font-weight: 500; color: var(--accent-purple); line-height: 1.2;
+    margin-bottom: auto; display: -webkit-box; -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;
+}
+.book-price {
+    font-size: 14px; font-weight: bold; color: #000;
+    background: linear-gradient(135deg, var(--accent-green) 0%, #00cc6a 100%);
+    padding: 4px 10px; border-radius: 4px; align-self: flex-start;
+    margin-top: 8px; box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+}
+.shop-vhs-case { position: relative; aspect-ratio: 2/3; }
+.shop-item-author {
+    font-size: 11px; font-weight: 500; color: var(--accent-purple); text-align: center;
 }
