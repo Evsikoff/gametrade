@@ -622,7 +622,7 @@ class GameTraderGame {
 
     openShop() {
         this.shopBalanceEl.textContent = Math.floor(this.balance);
-        this.emptySlotsEl.textContent = this.shelf.filter(s => s === null).length;
+        this.emptySlotsEl.textContent = this.shelf.filter(s => !s).length;
         this.renderShopCatalog();
         this.shopModal.classList.remove('hidden');
     }
@@ -664,7 +664,7 @@ class GameTraderGame {
             item.className = 'shop-item';
 
             const canAfford = this.balance >= game.price;
-            const hasEmptySlot = this.shelf.some(s => s === null);
+            const hasEmptySlot = this.shelf.some(s => !s);
             const isPurchasable = canAfford && hasEmptySlot;
 
             if (!isPurchasable) {
@@ -708,7 +708,7 @@ class GameTraderGame {
     buyGame(game) {
         if (this.balance < game.price) return;
 
-        const emptySlotIndex = this.shelf.findIndex(s => s === null);
+        const emptySlotIndex = this.shelf.findIndex(s => !s);
         if (emptySlotIndex === -1) return;
 
         this.balance -= game.price;
@@ -717,7 +717,7 @@ class GameTraderGame {
         this.ownedGames.add(game.id);
 
         this.shopBalanceEl.textContent = Math.floor(this.balance);
-        this.emptySlotsEl.textContent = this.shelf.filter(s => s === null).length;
+        this.emptySlotsEl.textContent = this.shelf.filter(s => !s).length;
 
         this.renderShopCatalog();
         this.renderShelf();
@@ -908,6 +908,10 @@ class GameTraderGame {
             const game = typeof GAMES !== 'undefined' ? GAMES.find(g => g.id === id) : null;
             return game || null;
         });
+        const totalSlots = 10;
+        if (this.shelf.length < totalSlots) {
+            this.shelf = this.shelf.concat(Array(totalSlots - this.shelf.length).fill(null));
+        }
 
         // Load or regenerate shop order
         if (saveData.shopGameOrder && saveData.shopGameOrder.length > 0) {
