@@ -985,5 +985,38 @@ class GameTraderGame {
     }
 }
 
-// Start the game
-window.game = new GameTraderGame();
+// Wait for data to be loaded, then start the game
+function waitForData(callback, maxAttempts = 50, interval = 100) {
+    let attempts = 0;
+    const check = () => {
+        attempts++;
+        if (typeof GAMES !== 'undefined' && typeof REQUESTS !== 'undefined' &&
+            Array.isArray(GAMES) && GAMES.length > 0 &&
+            Array.isArray(REQUESTS) && REQUESTS.length > 0) {
+            console.log('Game data loaded successfully:', GAMES.length, 'games,', REQUESTS.length, 'requests');
+            callback();
+        } else if (attempts < maxAttempts) {
+            setTimeout(check, interval);
+        } else {
+            console.error('Failed to load game data after', maxAttempts, 'attempts');
+            console.log('GAMES:', typeof GAMES, Array.isArray(GAMES) ? GAMES.length : 'not array');
+            console.log('REQUESTS:', typeof REQUESTS, Array.isArray(REQUESTS) ? REQUESTS.length : 'not array');
+            // Start anyway with empty data as fallback
+            callback();
+        }
+    };
+    check();
+}
+
+// Start the game when DOM and data are ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        waitForData(() => {
+            window.game = new GameTraderGame();
+        });
+    });
+} else {
+    waitForData(() => {
+        window.game = new GameTraderGame();
+    });
+}
