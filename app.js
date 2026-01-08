@@ -385,7 +385,7 @@ class GameTraderGame {
                     slot.innerHTML = `
                         <div class="game-cover">
                             <div class="game-spine"></div>
-                            <img src="${game.coverUrl}" alt="${game.title}" onerror="this.src='https://placehold.co/85x120/1a1a2e/00d9ff?text=Game'">
+                            <img src="${game.coverUrl}" alt="${game.title}" onerror="this.src='https://placehold.co/100x100/1a1a2e/00d9ff?text=Game'">
                         </div>
                         <div class="game-info">
                             <div class="game-title">${game.title}</div>
@@ -511,7 +511,7 @@ class GameTraderGame {
 
         this.modalCover.src = game.coverUrl;
         this.modalCover.onerror = () => {
-            this.modalCover.src = 'https://placehold.co/150x200/1a1a2e/00d9ff?text=Ошибка';
+            this.modalCover.src = 'https://placehold.co/180x180/1a1a2e/00d9ff?text=Ошибка';
         };
         this.modalTitle.textContent = game.title;
         this.modalYear.textContent = game.year + ' г.';
@@ -684,7 +684,7 @@ class GameTraderGame {
             item.innerHTML = `
                 <div class="shop-game-case">
                     <div class="shop-cover-wrapper">
-                        <img src="${game.coverUrl}" alt="${game.title}" onerror="this.src='https://placehold.co/120x160/1a1a2e/00d9ff?text=Game'">
+                        <img src="${game.coverUrl}" alt="${game.title}" onerror="this.src='https://placehold.co/150x150/1a1a2e/00d9ff?text=Game'">
                     </div>
                 </div>
                 <div class="shop-item-title">${game.title}</div>
