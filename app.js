@@ -1,8 +1,8 @@
 // ==========================================
-// Book Trader - Main Game Logic
+// Game Trader - Main Game Logic
 // ==========================================
 
-class BookTraderGame {
+class GameTraderGame {
     constructor() {
         // Game state
         this.balance = 0;
@@ -10,8 +10,8 @@ class BookTraderGame {
         this.soldUnique = new Set();
         this.soldTotal = 0;
         this.shelf = []; // 10 slots
-        this.ownedBooks = new Set(); // books we own
-        this.shopBookOrder = []; // randomized order of books in shop
+        this.ownedGames = new Set(); // games we own
+        this.shopGameOrder = []; // randomized order of games in shop
 
         // Day state
         this.currentCustomerIndex = 0;
@@ -26,7 +26,7 @@ class BookTraderGame {
         this.TOTAL_WIN = 200;
 
         // Storage key
-        this.STORAGE_KEY = 'book_trader_save_v1';
+        this.STORAGE_KEY = 'game_trader_save_v1';
 
         // Yandex SDK
         this.ysdk = null;
@@ -74,14 +74,14 @@ class BookTraderGame {
         this.btnNewGame = document.getElementById('btn-new-game');
 
         // Modals
-        this.bookModal = document.getElementById('film-modal'); // Keep ID or change in HTML. Kept 'film-modal' in HTML for now
+        this.gameModal = document.getElementById('game-modal');
         this.shopModal = document.getElementById('shop-modal');
         this.victoryModal = document.getElementById('victory-modal');
 
-        // Book modal
+        // Game modal
         this.modalCover = document.getElementById('modal-cover');
-        this.modalTitleRu = document.getElementById('modal-title-ru');
-        this.modalAuthor = document.getElementById('modal-author');
+        this.modalTitle = document.getElementById('modal-title');
+        this.modalYear = document.getElementById('modal-year');
         this.modalDescription = document.getElementById('modal-description');
         this.modalGenres = document.getElementById('modal-genres');
         this.modalPrice = document.getElementById('modal-price');
@@ -117,8 +117,8 @@ class BookTraderGame {
         this.btnEndDay.addEventListener('click', () => this.endDay());
         this.btnNewGame.addEventListener('click', () => this.confirmNewGame());
 
-        this.btnOffer.addEventListener('click', () => this.offerBook());
-        this.btnCloseModal.addEventListener('click', () => this.closeBookModal());
+        this.btnOffer.addEventListener('click', () => this.offerGame());
+        this.btnCloseModal.addEventListener('click', () => this.closeGameModal());
 
         this.btnCloseShop.addEventListener('click', () => this.handleFinishPurchase());
         this.filterGenre.addEventListener('change', () => this.renderShopCatalog());
@@ -139,13 +139,13 @@ class BookTraderGame {
     }
 
     async initializeGame() {
-        this.showLoadingScreen('Подключение к книжной сети');
+        this.showLoadingScreen('Подключение к игровой сети');
         await this.initYandexSDK();
 
-        this.updateLoadingStatus('Распаковка книг');
+        this.updateLoadingStatus('Загрузка игр');
         const progressLoaded = await this.loadProgress();
         if (progressLoaded) {
-            this.customerRequestEl.textContent = `День ${this.day}. Нажмите "Начать день" чтобы открыть лавку.`;
+            this.customerRequestEl.textContent = `День ${this.day}. Нажмите "Начать день" чтобы открыть магазин.`;
         } else {
             this.prepareNewRun();
         }
@@ -154,7 +154,7 @@ class BookTraderGame {
         this.renderShelf();
         this.updateStats();
 
-        this.updateLoadingStatus('Библиотека открывается');
+        this.updateLoadingStatus('Магазин открывается');
         await this.finishLoadingScreen('Добро пожаловать');
     }
 
@@ -313,34 +313,34 @@ class BookTraderGame {
     }
 
     prepareNewRun() {
-        // Use BOOKS instead of FILMS
-        const allBooks = typeof BOOKS !== 'undefined' ? BOOKS : [];
-        this.shopBookOrder = [...allBooks].sort(() => Math.random() - 0.5).map(b => b.id);
+        // Use GAMES database
+        const allGames = typeof GAMES !== 'undefined' ? GAMES : [];
+        this.shopGameOrder = [...allGames].sort(() => Math.random() - 0.5).map(g => g.id);
         this.shelf = [];
-        this.ownedBooks = new Set();
+        this.ownedGames = new Set();
         this.balance = 0; // Starting capital
 
-        // Initial stock: 10 ramdom books from the shop order
+        // Initial stock: 10 random games from the shop order
         for (let i = 0; i < 10; i++) {
-            const bookId = this.shopBookOrder[i];
-            const book = allBooks.find(b => b.id === bookId);
-            if (book) {
-                this.shelf.push(book);
-                this.ownedBooks.add(book.id);
+            const gameId = this.shopGameOrder[i];
+            const game = allGames.find(g => g.id === gameId);
+            if (game) {
+                this.shelf.push(game);
+                this.ownedGames.add(game.id);
             } else {
                 this.shelf.push(null);
             }
         }
 
-        this.customerRequestEl.textContent = 'Нажмите "Начать день" чтобы открыть лавку';
+        this.customerRequestEl.textContent = 'Нажмите "Начать день" чтобы открыть магазин';
     }
 
     populateGenreFilter() {
-        const sortedBooks = typeof BOOKS !== 'undefined' ? BOOKS : [];
+        const allGames = typeof GAMES !== 'undefined' ? GAMES : [];
         const genres = new Set();
-        sortedBooks.forEach(book => {
-            if (book.genres) {
-                book.genres.forEach(g => genres.add(g));
+        allGames.forEach(game => {
+            if (game.genres) {
+                game.genres.forEach(g => genres.add(g));
             }
         });
 
@@ -362,16 +362,16 @@ class BookTraderGame {
     renderShelf() {
         this.shelfEl.innerHTML = '';
 
-        const booksPerRow = 5;
+        const gamesPerRow = 5;
         const totalSlots = 10;
-        const rowCount = Math.ceil(totalSlots / booksPerRow);
+        const rowCount = Math.ceil(totalSlots / gamesPerRow);
 
         for (let row = 0; row < rowCount; row++) {
             const rowEl = document.createElement('div');
             rowEl.className = 'shelf-row';
 
-            for (let col = 0; col < booksPerRow; col++) {
-                const i = row * booksPerRow + col;
+            for (let col = 0; col < gamesPerRow; col++) {
+                const i = row * gamesPerRow + col;
                 if (i >= totalSlots) break;
 
                 const slot = document.createElement('div');
@@ -379,24 +379,24 @@ class BookTraderGame {
                 slot.dataset.index = i;
 
                 if (this.shelf[i]) {
-                    const book = this.shelf[i];
-                    const sellingPrice = Math.floor(book.price * 1.5);
+                    const game = this.shelf[i];
+                    const sellingPrice = Math.floor(game.price * 1.5);
 
                     slot.innerHTML = `
-                        <div class="book-cover">
-                            <div class="book-spine"></div>
-                            <img src="${book.coverUrl}" alt="${book.titleRu}" onerror="this.src='https://placehold.co/85x120/4a3728/f9f5eb?text=Книга'">
+                        <div class="game-cover">
+                            <div class="game-spine"></div>
+                            <img src="${game.coverUrl}" alt="${game.title}" onerror="this.src='https://placehold.co/85x120/1a1a2e/00d9ff?text=Game'">
                         </div>
-                        <div class="book-info">
-                            <div class="book-title">${book.titleRu}</div>
-                            <div class="book-author">${book.author}</div>
-                            <div class="book-price">${sellingPrice} ₽</div>
+                        <div class="game-info">
+                            <div class="game-title">${game.title}</div>
+                            <div class="game-year">${game.year} г.</div>
+                            <div class="game-price">${sellingPrice} ₽</div>
                         </div>
                     `;
-                    slot.addEventListener('click', () => this.openBookModal(i));
+                    slot.addEventListener('click', () => this.openGameModal(i));
                 } else {
                     slot.classList.add('empty');
-                    slot.innerHTML = '<div class="empty-slot-icon">📚</div>';
+                    slot.innerHTML = '<div class="empty-slot-icon">🎮</div>';
                 }
 
                 rowEl.appendChild(slot);
@@ -429,24 +429,24 @@ class BookTraderGame {
     }
 
     generateCustomers(count) {
-        // 1. Identification of books on the shelf
-        const shelfBookIds = this.shelf.filter(b => b !== null).map(b => b.id);
+        // 1. Identification of games on the shelf
+        const shelfGameIds = this.shelf.filter(g => g !== null).map(g => g.id);
 
         let chosenRequests = [];
         const usedRequestIndices = new Set();
 
-        // 2.1: gather up to 4 requests linked to 4 different random shelf books (unique requests)
-        const shuffledBooks = [...shelfBookIds].sort(() => Math.random() - 0.5).slice(0, 4);
+        // 2.1: gather up to 4 requests linked to 4 different random shelf games (unique requests)
+        const shuffledGames = [...shelfGameIds].sort(() => Math.random() - 0.5).slice(0, 4);
 
         // Ensure REQUESTS exists
         const allRequests = typeof REQUESTS !== 'undefined' ? REQUESTS : [];
 
-        shuffledBooks.forEach(bookId => {
+        shuffledGames.forEach(gameId => {
             if (chosenRequests.length >= count) return;
 
             const linked = allRequests
                 .map((req, idx) => ({ req, idx }))
-                .filter(({ req, idx }) => req.linkedBookIds.includes(bookId) && !usedRequestIndices.has(idx));
+                .filter(({ req, idx }) => req.linkedGameIds.includes(gameId) && !usedRequestIndices.has(idx));
 
             if (linked.length === 0) return;
 
@@ -499,53 +499,53 @@ class BookTraderGame {
         this.showCustomer();
     }
 
-    openBookModal(slotIndex) {
+    openGameModal(slotIndex) {
         if (!this.isDay || !this.shelf[slotIndex]) return;
 
         this.selectedSlot = slotIndex;
-        const book = this.shelf[slotIndex];
+        const game = this.shelf[slotIndex];
 
-        this.modalCover.src = book.coverUrl;
+        this.modalCover.src = game.coverUrl;
         this.modalCover.onerror = () => {
-            this.modalCover.src = 'https://placehold.co/150x200/4a3728/f9f5eb?text=Ошибка';
+            this.modalCover.src = 'https://placehold.co/150x200/1a1a2e/00d9ff?text=Ошибка';
         };
-        this.modalTitleRu.textContent = book.titleRu;
-        this.modalAuthor.textContent = book.author;
-        this.modalDescription.textContent = book.description || '';
-        this.modalGenres.textContent = 'Жанры: ' + (book.genres ? book.genres.join(', ') : '');
-        this.modalPrice.textContent = 'Цена: ' + Math.floor(book.price * 1.5) + ' ₽';
+        this.modalTitle.textContent = game.title;
+        this.modalYear.textContent = game.year + ' г.';
+        this.modalDescription.textContent = game.description || '';
+        this.modalGenres.textContent = 'Жанры: ' + (game.genres ? game.genres.join(', ') : '');
+        this.modalPrice.textContent = 'Цена: ' + Math.floor(game.price * 1.5) + ' ₽';
 
-        this.bookModal.classList.remove('hidden');
+        this.gameModal.classList.remove('hidden');
     }
 
-    closeBookModal() {
-        this.bookModal.classList.add('hidden');
+    closeGameModal() {
+        this.gameModal.classList.add('hidden');
         this.selectedSlot = null;
     }
 
-    offerBook() {
+    offerGame() {
         if (this.selectedSlot === null || !this.currentRequest) return;
 
         const slotIndex = this.selectedSlot;
-        const book = this.shelf[slotIndex];
-        const isMatch = this.currentRequest.linkedBookIds.includes(book.id);
+        const game = this.shelf[slotIndex];
+        const isMatch = this.currentRequest.linkedGameIds.includes(game.id);
 
-        this.closeBookModal();
+        this.closeGameModal();
 
         if (isMatch) {
             // Success!
-            this.handleSale(book, slotIndex);
+            this.handleSale(game, slotIndex);
         } else {
             // Fail
             this.handleRejection();
         }
     }
 
-    handleSale(book, slotIndex) {
-        const salePrice = Math.floor(book.price * 1.5);
+    handleSale(game, slotIndex) {
+        const salePrice = Math.floor(game.price * 1.5);
         this.balance += salePrice;
         this.soldTotal++;
-        this.soldUnique.add(book.id);
+        this.soldUnique.add(game.id);
 
         const slotEl = this.shelfEl.querySelector(`.shelf-slot[data-index="${slotIndex}"]`);
         if (slotEl) {
@@ -557,7 +557,7 @@ class BookTraderGame {
         // Remove from shelf with a short transition so the slot visibly clears
         setTimeout(() => {
             this.shelf[slotIndex] = null;
-            this.ownedBooks.delete(book.id);
+            this.ownedGames.delete(game.id);
             this.renderShelf();
             // Save progress after sale
             this.saveProgress();
@@ -584,8 +584,8 @@ class BookTraderGame {
 
         const rejections = [
             "Нет, это не то... Пойду поищу в другом месте.",
-            "Хм, не подходит. До свидания!",
-            "Автор не тот, да и жанр...",
+            "Хм, не та игра. До свидания!",
+            "Не тот жанр, что я искал...",
             "Нет, спасибо. Пойду дальше.",
             "Не то, что я хотел. Всего хорошего!"
         ];
@@ -602,7 +602,7 @@ class BookTraderGame {
         this.currentRequest = null;
 
         this.customerAvatarEl.textContent = '🌙';
-        this.customerRequestEl.textContent = 'Лавка закрыта. Время пополнить книжные полки!';
+        this.customerRequestEl.textContent = 'Магазин закрыт. Время пополнить коллекцию игр!';
         this.currentCustomerEl.textContent = '0';
         this.totalCustomersEl.textContent = '0';
 
@@ -626,40 +626,40 @@ class BookTraderGame {
     renderShopCatalog() {
         const genreFilter = this.filterGenre.value;
         const priceFilter = this.filterPrice.value;
-        const allBooks = typeof BOOKS !== 'undefined' ? BOOKS : [];
+        const allGames = typeof GAMES !== 'undefined' ? GAMES : [];
 
-        // 1. Get books in randomized order, filter out owned
-        let books = this.shopBookOrder
-            .map(id => allBooks.find(b => b.id === id))
-            .filter(book => book && !this.ownedBooks.has(book.id));
+        // 1. Get games in randomized order, filter out owned
+        let games = this.shopGameOrder
+            .map(id => allGames.find(g => g.id === id))
+            .filter(game => game && !this.ownedGames.has(game.id));
 
         // Apply genre filter
         if (genreFilter) {
-            books = books.filter(book => book.genres.includes(genreFilter));
+            games = games.filter(game => game.genres.includes(genreFilter));
         }
 
         // Apply price filter
         if (priceFilter === 'cheap') {
-            books = books.filter(book => book.price <= 200);
+            games = games.filter(game => game.price <= 200);
         } else if (priceFilter === 'medium') {
-            books = books.filter(book => book.price > 200 && book.price <= 450);
+            games = games.filter(game => game.price > 200 && game.price <= 450);
         } else if (priceFilter === 'expensive') {
-            books = books.filter(book => book.price > 450);
+            games = games.filter(game => game.price > 450);
         }
 
         this.shopCatalog.innerHTML = '';
 
         // 2. Render items
-        if (books.length === 0) {
-            this.shopCatalog.innerHTML = '<p style="text-align:center;color:#888;padding:20px;grid-column:1/-1;">Нет доступных книг по выбранным фильтрам</p>';
+        if (games.length === 0) {
+            this.shopCatalog.innerHTML = '<p style="text-align:center;color:var(--text-secondary);padding:20px;grid-column:1/-1;">Нет доступных игр по выбранным фильтрам</p>';
             return;
         }
 
-        books.forEach(book => {
+        games.forEach(game => {
             const item = document.createElement('div');
             item.className = 'shop-item';
 
-            const canAfford = this.balance >= book.price;
+            const canAfford = this.balance >= game.price;
             const hasEmptySlot = this.shelf.some(s => s === null);
             const isPurchasable = canAfford && hasEmptySlot;
 
@@ -678,14 +678,14 @@ class BookTraderGame {
             }
 
             item.innerHTML = `
-                <div class="shop-vhs-case">
+                <div class="shop-game-case">
                     <div class="shop-cover-wrapper">
-                        <img src="${book.coverUrl}" alt="${book.titleRu}" onerror="this.src='https://placehold.co/120x160/4a3728/f9f5eb?text=Книга'">
+                        <img src="${game.coverUrl}" alt="${game.title}" onerror="this.src='https://placehold.co/120x160/1a1a2e/00d9ff?text=Game'">
                     </div>
                 </div>
-                <div class="shop-item-title">${book.titleRu}</div>
-                <div class="shop-item-author">${book.author}</div>
-                <div class="shop-item-price">${book.price} ₽</div>
+                <div class="shop-item-title">${game.title}</div>
+                <div class="shop-item-year">${game.year} г.</div>
+                <div class="shop-item-price">${game.price} ₽</div>
                 ${buttonHtml}
             `;
 
@@ -693,7 +693,7 @@ class BookTraderGame {
                 const btn = item.querySelector('.btn-buy');
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation(); // prevent card click if we add one later
-                    this.buyBook(book);
+                    this.buyGame(game);
                 });
             }
 
@@ -701,16 +701,16 @@ class BookTraderGame {
         });
     }
 
-    buyBook(book) {
-        if (this.balance < book.price) return;
+    buyGame(game) {
+        if (this.balance < game.price) return;
 
         const emptySlotIndex = this.shelf.findIndex(s => s === null);
         if (emptySlotIndex === -1) return;
 
-        this.balance -= book.price;
+        this.balance -= game.price;
         // Keep balance as integer logic if needed, but simple subtraction is fine
-        this.shelf[emptySlotIndex] = book;
-        this.ownedBooks.add(book.id);
+        this.shelf[emptySlotIndex] = game;
+        this.ownedGames.add(game.id);
 
         this.shopBalanceEl.textContent = Math.floor(this.balance);
         this.emptySlotsEl.textContent = this.shelf.filter(s => s === null).length;
@@ -741,7 +741,7 @@ class BookTraderGame {
 
         this.btnStartDay.style.display = 'inline-block';
         this.customerAvatarEl.textContent = '☀️';
-        this.customerRequestEl.textContent = `День ${this.day}. Нажмите "Начать день" чтобы открыть лавку.`;
+        this.customerRequestEl.textContent = `День ${this.day}. Нажмите "Начать день" чтобы открыть магазин.`;
 
         this.updateStats();
         // Save progress when new day starts
@@ -789,11 +789,11 @@ class BookTraderGame {
 
     checkWinCondition() {
         if (this.soldUnique.size >= this.UNIQUE_WIN) {
-            this.showVictory(`Вы продали ${this.soldUnique.size} разных книг!`);
+            this.showVictory(`Вы продали ${this.soldUnique.size} разных игр!`);
             return true;
         }
         if (this.soldTotal >= this.TOTAL_WIN) {
-            this.showVictory(`Вы продали ${this.soldTotal} книг!`);
+            this.showVictory(`Вы продали ${this.soldTotal} игр!`);
             return true;
         }
         return false;
@@ -838,9 +838,9 @@ class BookTraderGame {
         this.soldUnique = new Set();
         this.soldTotal = 0;
         this.shelf = [];
-        this.ownedBooks = new Set();
+        this.ownedGames = new Set();
         this.inventory = [];
-        this.shopBookOrder = [];
+        this.shopGameOrder = [];
         this.currentCustomerIndex = 0;
         this.todayCustomers = [];
         this.currentRequest = null;
@@ -852,7 +852,7 @@ class BookTraderGame {
 
         // Hide modals
         this.victoryModal.classList.add('hidden');
-        this.bookModal.classList.add('hidden');
+        this.gameModal.classList.add('hidden');
         this.shopModal.classList.add('hidden');
 
         // Reset UI
@@ -861,7 +861,7 @@ class BookTraderGame {
         this.btnEndDay.style.display = 'none';
 
         this.customerAvatarEl.textContent = '🧑';
-        this.customerRequestEl.textContent = 'Нажмите "Начать день" чтобы открыть лавку';
+        this.customerRequestEl.textContent = 'Нажмите "Начать день" чтобы открыть магазин';
         this.currentCustomerEl.textContent = '0';
         this.totalCustomersEl.textContent = '0';
 
@@ -885,9 +885,9 @@ class BookTraderGame {
             day: this.day,
             soldTotal: this.soldTotal,
             soldUnique: [...this.soldUnique],
-            shelf: this.shelf.map(book => book ? book.id : null),
-            ownedBooks: [...this.ownedBooks],
-            shopBookOrder: this.shopBookOrder
+            shelf: this.shelf.map(game => game ? game.id : null),
+            ownedGames: [...this.ownedGames],
+            shopGameOrder: this.shopGameOrder
         };
     }
 
@@ -896,22 +896,22 @@ class BookTraderGame {
         this.day = saveData.day ?? 1;
         this.soldTotal = saveData.soldTotal ?? 0;
         this.soldUnique = new Set(saveData.soldUnique || []);
-        this.ownedBooks = new Set(saveData.ownedBooks || []);
+        this.ownedGames = new Set(saveData.ownedGames || []);
 
         // Load shelf
         this.shelf = (saveData.shelf || []).map(id => {
             if (id === null) return null;
-            const book = typeof BOOKS !== 'undefined' ? BOOKS.find(b => b.id === id) : null;
-            return book || null;
+            const game = typeof GAMES !== 'undefined' ? GAMES.find(g => g.id === id) : null;
+            return game || null;
         });
 
         // Load or regenerate shop order
-        if (saveData.shopBookOrder && saveData.shopBookOrder.length > 0) {
-            this.shopBookOrder = saveData.shopBookOrder;
+        if (saveData.shopGameOrder && saveData.shopGameOrder.length > 0) {
+            this.shopGameOrder = saveData.shopGameOrder;
         } else {
-            // Fallback if loading old save without book order
-            const allBooks = typeof BOOKS !== 'undefined' ? BOOKS : [];
-            this.shopBookOrder = allBooks.map(b => b.id);
+            // Fallback if loading old save without game order
+            const allGames = typeof GAMES !== 'undefined' ? GAMES : [];
+            this.shopGameOrder = allGames.map(g => g.id);
         }
     }
 
@@ -960,10 +960,10 @@ class BookTraderGame {
         }
 
         if (data) {
-            // Check if save is from old VHS version (has 'ownedFilms' but no 'ownedBooks')
+            // Check if save is from old version (has 'ownedBooks' but no 'ownedGames')
             // If so, we should probably reset or try to migrate, but simple is reset.
-            if (!data.ownedBooks && data.ownedFilms) {
-                console.log('Detected old VHS save, resetting for Books');
+            if (!data.ownedGames && (data.ownedBooks || data.ownedFilms)) {
+                console.log('Detected old save format, resetting for Games');
                 return false;
             }
 
@@ -982,4 +982,4 @@ class BookTraderGame {
 }
 
 // Start the game
-window.game = new BookTraderGame();
+window.game = new GameTraderGame();
