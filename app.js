@@ -434,6 +434,7 @@ class GameTraderGame {
 
         let chosenRequests = [];
         const usedRequestIndices = new Set();
+        const usedRequestTexts = new Set(); // Track used texts to prevent duplicate phrases
 
         // 2.1: gather up to 4 requests linked to 4 different random shelf games (unique requests)
         const shuffledGames = [...shelfGameIds].sort(() => Math.random() - 0.5).slice(0, 4);
@@ -446,13 +447,14 @@ class GameTraderGame {
 
             const linked = allRequests
                 .map((req, idx) => ({ req, idx }))
-                .filter(({ req, idx }) => req.linkedGameIds.includes(gameId) && !usedRequestIndices.has(idx));
+                .filter(({ req, idx }) => req.linkedGameIds.includes(gameId) && !usedRequestIndices.has(idx) && !usedRequestTexts.has(req.text));
 
             if (linked.length === 0) return;
 
             const { req, idx } = linked[Math.floor(Math.random() * linked.length)];
             chosenRequests.push(req);
             usedRequestIndices.add(idx);
+            usedRequestTexts.add(req.text);
         });
 
         // 2.2: fill remaining slots with random unique requests
@@ -460,9 +462,11 @@ class GameTraderGame {
         for (let { r, i } of allShuffled) {
             if (chosenRequests.length >= count) break;
             if (usedRequestIndices.has(i)) continue;
+            if (usedRequestTexts.has(r.text)) continue; // Skip if text already used
 
             chosenRequests.push(r);
             usedRequestIndices.add(i);
+            usedRequestTexts.add(r.text);
         }
 
         // Shuffle the final list and add avatars
